@@ -1,0 +1,39 @@
+Problem Statement 4 (Procedures / Functions)
+
+create or replace procedure p1(
+acc_no in number , i_rate in number)
+as
+ 
+year number;
+balance1 number;
+s_interest number;
+begin
+select BALANCE,NOOFYEARS into balance1,year from account where ACCOUNT_NO=acc_no ;
+s_interest:=( balance1*year*i_rate)/100;
+dbms_output.put_line(s_interest);
+end;
+
+begin
+p1(12,3);
+end;
+
+
+CREATE OR REPLACE FUNCTION accountDisplay
+RETURN NUMBER AS
+BEGIN
+  FOR rec IN (SELECT * FROM Account WHERE Balance > 5000) LOOP
+    DBMS_OUTPUT.PUT_LINE(rec.Account_No || ' ' || rec.Cust_Name || ' ' || rec.Balance || ' ' || rec.NoOfYears);
+  END LOOP;
+  RETURN 0;
+END;
+
+
+declare
+ variable number;
+begin
+  variable :=accountDisplay();
+end;
+
+
+
+

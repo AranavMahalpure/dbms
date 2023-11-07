@@ -1,0 +1,40 @@
+Create Book Collection with (Title, Author_name, Borrowed_status) as fields. Write Map Reduce Functions for
+following requirements.
+
+1. Display Author wise list of books.
+2. Display Author wise list of books having Borrowed status as “True”.
+3. Display Author wise list of books having price greater than 300.
+
+db.Books.aggregate([
+  {
+    $group: {
+      _id: "$Author_name",
+      books: { $push: "$$ROOT" }
+    }
+  }
+])
+
+db.Books.aggregate([
+  {
+    $match: { "Borrowed_status": true }
+  },
+  {
+    $group: {
+      _id: "$Author_name",
+      books: { $push: "$$ROOT" }
+    }
+  }
+])
+
+
+db.Books.aggregate([
+  {
+    $match: { "Price": { $gt: 300 } }
+  },
+  {
+    $group: {
+      _id: "$Author_name",
+      books: { $push: "$$ROOT" }
+    }
+  }
+])

@@ -1,0 +1,26 @@
+Problem Statement 10 (Triggers)
+
+
+1. Create a Trigger to ensure the salary of the employee is not decreased.
+
+create or replace trigger SalaryDecrease
+BEFORE UPDATE ON Employee
+FOR EACH ROW
+BEGIN
+IF :NEW.salary < :OLD.salary THEN
+RAISE_APPLICATION_ERROR(-20001,'Cannot Decrease Salary of Employee');
+END IF;
+END;
+update employee set salary=100000 where emp_id=1;
+
+
+2. Whenever the job title is changed for an employee write the following details into job_history table. Employee ID, old job title, old department ID, DoJ for start date, system date for end date
+
+create or replace trigger EmpRecord
+BEFORE UPDATE ON Employee
+FOR EACH ROW
+BEGIN
+IF :NEW.job_title != :OLD.job_title THEN
+INSERT INTO EmpRecord values(:OLD.emp_id,:OLD.job_title, :OLD.dept_id, :OLD.DoJ, SYSDATE);
+END IF;
+END;

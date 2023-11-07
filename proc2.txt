@@ -1,0 +1,25 @@
+Problem Statement 16 (Procedures / Functions)
+
+
+create or replace procedure p2
+as
+i_COMMISSION number;
+begin
+for obj in(select * from emp) loop
+if obj.salary>10000 then
+i_COMMISSION :=0.4;
+elsif 3000<obj.salary and obj.salary<10000 then
+i_COMMISSION := 0.35;
+else 
+i_COMMISSION:=0.15;
+end if;
+update emp set COMMISSION=i_COMMISSION where EMP_ID=obj.EMP_ID;
+end loop;
+end;
+
+begin
+p2();
+end;
+
+
+

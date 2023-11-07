@@ -1,0 +1,64 @@
+Create following tables using a given schema and insert appropriate data into the same:
+Customer (CustID, Name, Cust_Address, Phone_no, Email_ID, Age)
+Branch (Branch ID, Branch_Name, Address)
+Account (Account_no, Branch ID, CustID, open_date, Account_type, Balance)
+1. Create the tables with referential integrity.
+2. Draw the ER diagram for the same.
+3. Create a View as Saving account displaying the customer details with the open date as 16/8/2018.
+4. Update the View with Cust_Address as Pune for CustID =103.
+5. Create a View as Loan account displaying the customer details with the open date as 16/2/2018.
+6. Create an Index on primary key column of table Customer.
+7. Create an Index on primary key column of table Branch.
+8. Create a sequence on Customer Table.
+9. Create synonym ‘Cust_info’ for branch table.
+
+CREATE TABLE Customer (
+    CustID INT AUTO_INCREMENT,
+    Name VARCHAR(50),
+    Cust_Address VARCHAR(100),
+    Phone_no VARCHAR(15),
+    Email_ID VARCHAR(50),
+    Age INT,
+    PRIMARY KEY (CustID)
+);
+
+CREATE TABLE Branch (
+    Branch_ID INT AUTO_INCREMENT,
+    Branch_Name VARCHAR(50),
+    Address VARCHAR(100),
+    PRIMARY KEY (Branch_ID)
+);
+
+CREATE TABLE Account (
+    Account_no INT AUTO_INCREMENT,
+    Branch_ID INT,
+    CustID INT,
+    open_date DATE,
+    Account_type VARCHAR(20),
+    Balance DECIMAL(10,2),
+    PRIMARY KEY (Account_no),
+    FOREIGN KEY (Branch_ID) REFERENCES Branch(Branch_ID),
+    FOREIGN KEY (CustID) REFERENCES Customer(CustID)
+);
+
+CREATE VIEW Saving_account AS
+SELECT C.CustID, C.Name, C.Cust_Address, C.Phone_no, C.Email_ID, C.Age, A.Account_no, A.open_date, A.Account_type, A.Balance
+FROM Customer C
+JOIN Account A ON C.CustID = A.CustID
+WHERE A.open_date = '2018-08-16' AND A.Account_type = 'Saving';
+
+UPDATE Customer SET Cust_Address = 'Pune' WHERE CustID = 103;
+
+CREATE VIEW Loan_account AS
+SELECT C.CustID, C.Name, C.Cust_Address, C.Phone_no, C.Email_ID, C.Age, A.Account_no, A.open_date, A.Account_type, A.Balance
+FROM Customer C
+JOIN Account A ON C.CustID = A.CustID
+WHERE A.open_date = '2018-02-16' AND A.Account_type = 'Loan';
+
+CREATE INDEX idx_CustID ON Customer(CustID);
+
+CREATE INDEX idx_Branch_ID ON Branch(Branch_ID);
+
+CREATE SEQUENCE CustSeq START WITH 101;
+
+CREATE SYNONYM Cust_info FOR Customer;

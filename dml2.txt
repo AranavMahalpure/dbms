@@ -1,0 +1,51 @@
+Create following tables using a given schema and insert appropriate data into the same:
+Customer (CustID, Name, Cust_Address, Phone_no, Age)
+Branch (Branch ID, Branch_Name, Address)
+Account (Account_no, Branch ID, CustID, date_open, Account_type, Balance)
+1. Add the column “Email_Address” in Customer table.
+2. Change the name of column “Email_Address” to “Email_ID” in Customer table.
+3. Display the customer details with highest balance in the account.
+4. Display the customer details with lowest balance for account type= “Saving Account”.
+5. Display the customer details that live in Pune and have age greater than 35.
+6. Display the Cust_ID, Name and Age of the customer in ascending order of their age.
+7. Display the Name and Branch ID of the customer group by the Account_type.
+
+ALTER TABLE Customer
+ADD COLUMN Email_Address VARCHAR(100);
+
+ALTER TABLE Customer
+CHANGE COLUMN Email_Address Email_ID VARCHAR(100);
+
+ALTER TABLE Customer
+ADD COLUMN Email_Address VARCHAR(100);
+
+ALTER TABLE Customer
+CHANGE COLUMN Email_Address Email_ID VARCHAR(100);
+
+SELECT c.CustID, c.Name, c.Cust_Address, c.Phone_no, c.Age, a.Account_no, a.Balance
+FROM Customer c
+JOIN Account a ON c.CustID = a.CustID
+ORDER BY a.Balance DESC
+LIMIT 1;
+
+SELECT c.CustID, c.Name, c.Cust_Address, c.Phone_no, c.Age, a.Account_no, a.Balance
+FROM Customer c
+JOIN Account a ON c.CustID = a.CustID
+WHERE a.Account_type = 'Saving Account'
+ORDER BY a.Balance ASC
+LIMIT 1;
+
+SELECT CustID, Name, Cust_Address, Phone_no, Age
+FROM Customer
+WHERE Cust_Address LIKE '%Pune%' AND Age > 35;
+
+SELECT CustID, Name, Age
+FROM Customer
+ORDER BY Age ASC;
+
+SELECT c.Name, a.Account_type, b.Branch_ID
+FROM Customer c
+JOIN Account a ON c.CustID = a.CustID
+JOIN Branch b ON a.Branch_ID = b.Branch_ID
+GROUP BY a.Account_type;
+
